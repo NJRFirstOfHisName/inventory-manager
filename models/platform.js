@@ -9,7 +9,7 @@ const PlatformSchema = new Schema({
 
 // Virtual for platform's URL
 PlatformSchema.virtual("url").get(function () {
-  return `/catalog/platform/${this._id}`;
+  return `/inventory/platform/${this._id}`;
 });
 
 // Export model

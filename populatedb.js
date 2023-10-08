@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 console.log(
-  'This script populates a test catalog of games, genres, and platforms. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/game_store?retryWrites=true&w=majority"'
+  'This script populates a test inventory of games, genres, and platforms. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/game_store?retryWrites=true&w=majority"'
 );
 
 // Get arguments passed on command line
