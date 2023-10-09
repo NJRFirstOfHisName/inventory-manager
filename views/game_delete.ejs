@@ -1,0 +1,25 @@
+<%- include('layout', {title:title}) %>
+
+<div class="content">
+  <h1><%= title %>: <%= game.title %></h1>
+  <p><%= game.description %></p>
+
+  <% if(game.stock != 0){ %>
+  <p>Clear the game's stock before deleting the record.</p>
+  <% } else { %>
+  <p>Do you really want to delete this game?</p>
+  <form action="" method="POST">
+    <div class="form-group">
+      <input
+        type="hidden"
+        id="gameid"
+        class="form-control"
+        name="gameid"
+        required
+        value="<%= game._id %>"
+      />
+    </div>
+    <button class="btn btn-primary">Delete</button>
+  </form>
+  <% } %>
+</div>

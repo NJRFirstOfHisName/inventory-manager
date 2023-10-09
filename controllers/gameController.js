@@ -22,10 +22,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all games.
 exports.game_list = asyncHandler(async (req, res, next) => {
-  const allGames = await Game.find({}, "title price platform")
-    .sort({ title: 1 })
-    .populate("platform")
-    .exec();
+  const allGames = await Game.find().sort({ title: 1 }).exec();
 
   res.render("game_list", { title: "Game List", game_list: allGames });
 });
@@ -159,7 +156,7 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
   if (game === null) {
     // No results.
-    res.redirect("/catalog/games");
+    res.redirect("/inventory/games");
   }
 
   res.render("game_delete", {
@@ -185,7 +182,7 @@ exports.game_delete_post = asyncHandler(async (req, res, next) => {
   } else {
     // Game has no instances. Delete object and redirect to the list of games.
     await Game.findByIdAndRemove(req.body.gameid);
-    res.redirect("/catalog/games");
+    res.redirect("/inventory/games");
   }
 });
 

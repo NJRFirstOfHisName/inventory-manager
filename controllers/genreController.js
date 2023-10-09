@@ -93,7 +93,7 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
 
   if (genre === null) {
     // No results.
-    res.redirect("/catalog/genres");
+    res.redirect("/inventory/genres");
   }
 
   res.render("genre_delete", {
@@ -123,7 +123,7 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
   } else {
     // Genre has no games. Delete object and redirect to the list of genres.
     await Genre.findByIdAndRemove(req.body.genreid);
-    res.redirect("/catalog/genres");
+    res.redirect("/inventory/genres");
   }
 });
 

@@ -1,16 +1,27 @@
-import "dotenv/config";
-
+require("dotenv").config();
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const compression = require("compression");
+const helmet = require("helmet");
 
+const RateLimit = require("express-rate-limit");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const inventoryRouter = require("./routes/inventory");
 
 const app = express();
+
+// Set up rate limiter: maximum of twenty requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
 
 // Set up mongoose connection
 mongoose.set("strictQuery", false);
@@ -33,6 +44,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/inventory", inventoryRouter); // Add inventory routes to middleware chain.
+
+// Add helmet to the middleware chain.
+// Set CSP headers to allow our Bootstrap and Jquery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

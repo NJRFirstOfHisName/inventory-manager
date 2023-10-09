@@ -1,11 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<%- include('layout', {title:title}) %>
+<div class="content">
+  <h1><%= title %></h1>
+  <p>
+    Wecome to the inventory management of Big Ol' Video Game Store, a
+    phoney-baloney company that stocks only the 10 best-selling games of 2022.
+    <br />
+    Plus whatever I add to test the database, minus whatever casualties are lost
+    to the same.
+  </p>
+
+  <h1>Dynamic inventory</h1>
+
+  <p>The store has the following record counts:</p>
+  <ul>
+    <li>Games: <%= game_count %></li>
+    <li>Genres: <%= genre_count %></li>
+    <li>Platforms: <%= platform_count %></li>
+  </ul>
+</div>

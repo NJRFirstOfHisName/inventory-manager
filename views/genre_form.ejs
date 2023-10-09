@@ -1,0 +1,27 @@
+<%- include('layout', {title:title}) %>
+
+<div class="content">
+  <h1><%= title %></h1>
+  <form method="POST" action="">
+    <div class="form-group">
+      <label for="name">Genre:</label>
+      <input
+        type="text"
+        name="name"
+        placeholder="First-Person Shooter, Role Playing Game, etc."
+        id="name"
+        class="form-control"
+        value="<% locals.genre ? genre : '' %>"
+        required="true"
+      />
+    </div>
+    <button type="submit" class="btn-primary">Submit</button>
+  </form>
+  <% if(locals.errors) { %>
+  <ul>
+    <% errors.forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+  <% } %>
+</div>

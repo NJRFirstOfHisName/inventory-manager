@@ -1,0 +1,31 @@
+<%- include('layout', {title:title}) %>
+
+<div class="content">
+  <h1>Title: <%= game.title %></h1>
+  <p>Description: <%= game.description %></p>
+  <p>Price per unit: <%= game.price %> (<%= game.stock %> units on hand)</p>
+  <% if(typeof game.developer != 'undefined'){ %>
+  <p>Developer: <%= game.developer %></p>
+  <% } %> <% if(typeof game.publisher != 'undefined'){ %>
+  <p>Publisher: <%= game.publisher %></p>
+  <% } %>
+  <p>
+    <%= genres %> Genre(s): <% game.genre.forEach((val, index) => { %>
+    <a href="<%= val.url %>"><%= val.name %></a><% if(index < game.genre.length
+    - 1) { %>,<% }}) %>
+  </p>
+  <p>
+    Platform(s): <% game.platform.forEach((val, index) => { %>
+    <a href="<%= val.url %>"><%= val.name %></a>
+    <% if(index < game.platform.length - 1) { %>,<% }}) %>
+  </p>
+</div>
+
+<hr />
+<div>
+  <p>
+    <a href="<%= game.url %>/delete">Delete Game</a>
+    <br />
+    <a href="<%= game.url %>/update">Update Game</a>
+  </p>
+</div>

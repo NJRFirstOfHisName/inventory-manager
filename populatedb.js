@@ -4,19 +4,19 @@ console.log(
   'This script populates a test inventory of games, genres, and platforms. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/game_store?retryWrites=true&w=majority"'
 );
 
-// Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 
 const mongoose = require("mongoose");
-const Game = require("./models/game");
+
 const Genre = require("./models/genre");
 const Platform = require("./models/platform");
+const Game = require("./models/game");
 
-const games = [];
 const genres = [];
 const platforms = [];
+const games = [];
 
-mongoose.set("strictQuery", false); // Prepare for Mongoose 7
+mongoose.set("strictQuery", false);
 
 const mongoDB = userArgs[0];
 
@@ -26,37 +26,11 @@ async function main() {
   console.log("Debug: About to connect");
   await mongoose.connect(mongoDB);
   console.log("Debug: Should be connected?");
-  await createGames();
   await createGenres();
   await createPlatforms();
+  await createGames();
   console.log("Debug: Closing mongoose");
   mongoose.connection.close();
-}
-
-async function gameCreate(
-  index,
-  name,
-  description,
-  price,
-  stock,
-  developer,
-  publisher,
-  genre,
-  platform
-) {
-  const game = new Game({
-    name,
-    description,
-    price,
-    stock,
-    developer,
-    publisher,
-    genre,
-    platform,
-  });
-  await game.save();
-  games[index] = game;
-  console.log(`Added game: ${name}`);
 }
 
 async function genreCreate(index, name, description) {
@@ -71,129 +45,36 @@ async function platformCreate(index, name, company) {
   const platform = new Platform({ name, company });
 
   await platform.save();
-  genres[index] = platform;
+  platforms[index] = platform;
   console.log(`Added platform: ${name}`);
 }
 
-async function createGames() {
-  console.log("Adding games");
-  const max = 10;
-  function getStock() {
-    return Math.floor(Math.random() * max).toString();
-  }
+async function gameCreate(
+  index,
+  title,
+  description,
+  price,
+  stock,
+  developer,
+  publisher,
+  genre,
+  platform
+) {
+  const gamedetail = {
+    title,
+    description,
+    price,
+    stock,
+    developer,
+    publisher,
+    genre,
+    platform,
+  };
 
-  await Promise.all([
-    gameCreate(
-      0,
-      "Call of Duty: Modern Warfare II",
-      "Good guys gripping guns gallantly and griping grossly greet grave generals as they gallivant globally.",
-      "69.99",
-      getStock(),
-      "Infinity Ward",
-      "Activision",
-      genres[0],
-      [platforms[1], platforms[2], platforms[3]]
-    ),
-    gameCreate(
-      1,
-      "Elden Ring",
-      "Explore a massive, mysterious world in which everything wants to kill you.",
-      "49.99",
-      getStock(),
-      "FromSoftware",
-      "Bandai Namco Entertainment",
-      [genres[1], genres[2]],
-      [platforms[1], platforms[2], platforms[3]]
-    ),
-    gameCreate(
-      2,
-      "Madden NFL 23",
-      "Play football!",
-      "14.99",
-      getStock(),
-      "EA Tiburon",
-      "EA Sports",
-      genres[3],
-      [platforms[1], platforms[2], platforms[3]]
-    ),
-    gameCreate(
-      3,
-      "God of War Ragnarok",
-      "Go on a rip-roaring adventure as a father bonding with his son.",
-      "69.99",
-      getStock(),
-      "Santa Monica Studio",
-      "Sony Interactive Entertainment",
-      [genres[2], genres[4]],
-      platforms[1]
-    ),
-    gameCreate(
-      4,
-      "Lego Star Wars: The Skywalker Saga",
-      "Play through all 9 mainline Star Wars movies as a variety of tiny Lego dudes.",
-      "29.99",
-      getStock(),
-      "Traveller's Tales",
-      "Warner Bros. Games",
-      [genres[2], genres[4]],
-      [platforms[0], platforms[1], platforms[2], platforms[3]]
-    ),
-    gameCreate(
-      5,
-      "Pokemon Scarlet/Violet",
-      "It's Pokemon, you know what to expect.",
-      "59.99",
-      getStock(),
-      "Game Freak",
-      "Nintendo",
-      genres[1],
-      platforms[0]
-    ),
-    gameCreate(
-      6,
-      "Fifa 23",
-      "Play football!",
-      "29.99",
-      getStock(),
-      "EA Vancouver, EA Romania",
-      "EA Sports",
-      genres[3],
-      [platforms[0], platforms[1], platforms[2], platforms[3]]
-    ),
-    gameCreate(
-      7,
-      "Pokemon Legends: Arceus",
-      "Explore an open world while engaging in series-first action gameplay! Whoa.",
-      "59.99",
-      getStock(),
-      "Game Freak",
-      "Nintendo",
-      [genres[1], genres[2]],
-      platforms[0]
-    ),
-    gameCreate(
-      8,
-      "Horizon Forbidden West",
-      "Hunt dinosaur-looking robots with a bow.",
-      "49.99",
-      getStock(),
-      "Guerilla Games",
-      "Sony Interactive Entertainment",
-      [genres[1], genres[2]],
-      platforms[1]
-    ),
-    gameCreate(
-      9,
-      "MLB The Show 22",
-      "Play baseball!",
-      "59.99",
-      getStock(),
-      "San Diego Studio",
-      "Sony Interactive Entertainment",
-      genres[3],
-      [platforms[0], platforms[1], platforms[2]]
-    ),
-  ]);
+  const game = new Game(gamedetail);
+  await game.save();
+  games[index] = game;
+  console.log(`Added game: ${title}`);
 }
 
 async function createGenres() {
@@ -230,5 +111,126 @@ async function createPlatforms() {
     platformCreate(1, "PlayStation 5", "Sony"),
     platformCreate(2, "Xbox", "Microsoft"),
     platformCreate(3, "PC", "Microsoft"),
+  ]);
+}
+
+async function createGames() {
+  console.log("Adding games");
+  const max = 10;
+  function getStock() {
+    return Math.floor(Math.random() * max).toString();
+  }
+
+  await Promise.all([
+    gameCreate(
+      0,
+      "Call of Duty: Modern Warfare II",
+      "Good guys gripping guns gallantly and griping grossly greet grave generals as they gallivant globally.",
+      "69.99",
+      getStock(),
+      "Infinity Ward",
+      "Activision",
+      [genres[0]],
+      [platforms[1], platforms[2], platforms[3]]
+    ),
+    gameCreate(
+      1,
+      "Elden Ring",
+      "Explore a massive, mysterious world in which everything wants to kill you.",
+      "49.99",
+      getStock(),
+      "FromSoftware",
+      "Bandai Namco Entertainment",
+      [genres[1], genres[2]],
+      [platforms[1], platforms[2], platforms[3]]
+    ),
+    gameCreate(
+      2,
+      "Madden NFL 23",
+      "Play football!",
+      "14.99",
+      getStock(),
+      "EA Tiburon",
+      "EA Sports",
+      [genres[3]],
+      [platforms[1], platforms[2], platforms[3]]
+    ),
+    gameCreate(
+      3,
+      "God of War Ragnarok",
+      "Go on a rip-roaring adventure as a father bonding with his son.",
+      "69.99",
+      getStock(),
+      "Santa Monica Studio",
+      "Sony Interactive Entertainment",
+      [genres[2], genres[4]],
+      [platforms[1]]
+    ),
+    gameCreate(
+      4,
+      "Lego Star Wars: The Skywalker Saga",
+      "Play through all 9 mainline Star Wars movies as a variety of tiny Lego dudes.",
+      "29.99",
+      getStock(),
+      "Traveller's Tales",
+      "Warner Bros. Games",
+      [genres[2], genres[4]],
+      [platforms[0], platforms[1], platforms[2], platforms[3]]
+    ),
+    gameCreate(
+      5,
+      "Pokemon Scarlet/Violet",
+      "It's Pokemon, you know what to expect.",
+      "59.99",
+      getStock(),
+      "Game Freak",
+      "Nintendo",
+      [genres[1]],
+      [platforms[0]]
+    ),
+    gameCreate(
+      6,
+      "Fifa 23",
+      "Play football!",
+      "29.99",
+      getStock(),
+      "EA Vancouver, EA Romania",
+      "EA Sports",
+      [genres[3]],
+      [platforms[0], platforms[1], platforms[2], platforms[3]]
+    ),
+    gameCreate(
+      7,
+      "Pokemon Legends: Arceus",
+      "Explore an open world while engaging in series-first action gameplay! Whoa.",
+      "59.99",
+      getStock(),
+      "Game Freak",
+      "Nintendo",
+      [genres[1], genres[2]],
+      [platforms[0]]
+    ),
+    gameCreate(
+      8,
+      "Horizon Forbidden West",
+      "Hunt dinosaur-looking robots with a bow.",
+      "49.99",
+      getStock(),
+      "Guerilla Games",
+      "Sony Interactive Entertainment",
+      [genres[1], genres[2]],
+      [platforms[1]]
+    ),
+    gameCreate(
+      9,
+      "MLB The Show 22",
+      "Play baseball!",
+      "59.99",
+      getStock(),
+      "San Diego Studio",
+      "Sony Interactive Entertainment",
+      [genres[3]],
+      [platforms[0], platforms[1], platforms[2]]
+    ),
   ]);
 }

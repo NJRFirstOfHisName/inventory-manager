@@ -1,0 +1,15 @@
+<%- include('layout', {title:title}) %>
+
+<div class="content">
+  <h1><%= title %></h1>
+  <ul>
+    <% game_list.forEach(game => { %>
+    <li>
+      <a href="<%= game.url %>"><strong><%= game.title %></strong></a
+      >-<em><%= game.description %></em>
+    </li>
+    <% }); %> <% if(!game_list) {%>
+    <li>There are no games.</li>
+    <% } %>
+  </ul>
+</div>

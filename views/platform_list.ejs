@@ -1,0 +1,16 @@
+<%- include('layout', {title:title}) %>
+
+<div class="content">
+  <h1><%= title %></h1>
+  <ul>
+    <% platform_list.forEach(platform => { %>
+    <li>
+      <a href="<%= platform.url %>"
+        ><% platform.company %> <%= platform.name %></a
+      >
+    </li>
+    <% }) %> <% if(!platform_list) {%>
+    <li>There are no platforms.</li>
+    <% } %>
+  </ul>
+</div>

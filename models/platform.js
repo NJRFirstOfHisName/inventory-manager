@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const PlatformSchema = new Schema({
   name: { type: String, required: true },
-  company: { type: String },
+  company: { type: String, required: true },
 });
 
 // Virtual for platform's URL
