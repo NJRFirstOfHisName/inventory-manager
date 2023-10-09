@@ -125,12 +125,17 @@ exports.game_create_post = [
         Genre.find().exec(),
       ]);
 
-      // Mark our selected genres as checked.
-      for (const genre of allGenres) {
+      // Mark our selected genres and platforms as checked.
+      allGenres.forEach((genre) => {
         if (game.genre.includes(genre._id)) {
           genre.checked = "true";
         }
-      }
+      });
+      allPlatforms.forEach((platform) => {
+        if (game.platform.includes(platform._id)) {
+          platform.checked = "true";
+        }
+      });
       res.render("game_form", {
         title: "Create Game",
         platforms: allPlatforms,
@@ -203,13 +208,21 @@ exports.game_update_get = asyncHandler(async (req, res, next) => {
   }
 
   // Mark our selected genres as checked.
-  for (const genre of allGenres) {
-    for (const game_g of game.genre) {
+  allGenres.forEach((genre) => {
+    game.genre.forEach((game_g) => {
       if (genre._id.toString() === game_g._id.toString()) {
         genre.checked = "true";
       }
-    }
-  }
+    });
+  });
+
+  allPlatforms.forEach((platform) => {
+    game.platform.forEach((game_g) => {
+      if (platform._id.toString() === game_g._id.toString()) {
+        platform.checked = "true";
+      }
+    });
+  });
 
   res.render("game_form", {
     title: "Update Game",

@@ -45,7 +45,10 @@ exports.platform_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape(),
-  body("company").escape(),
+  body("company", "Company must not be empty")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
@@ -53,7 +56,10 @@ exports.platform_create_post = [
     const errors = validationResult(req);
 
     // Create a platform object with escaped and trimmed data.
-    const platform = new Platform({ name: req.body.name });
+    const platform = new Platform({
+      name: req.body.name,
+      company: req.body.company,
+    });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -85,14 +91,12 @@ exports.platform_delete_get = asyncHandler(async (req, res, next) => {
   // Get details of platform and all its games (in parallel)
   const [platform, allGamesInPlatform] = await Promise.all([
     Platform.findById(req.params.id).exec(),
-    Game.find({ platform: req.params.id }, "title author")
-      .populate("author")
-      .exec(),
+    Game.find({ platform: req.params.id }, "title").exec(),
   ]);
 
   if (platform === null) {
     // No results.
-    res.redirect("/catalog/platforms");
+    res.redirect("/inventory/platforms");
   }
 
   res.render("platform_delete", {
@@ -107,9 +111,7 @@ exports.platform_delete_post = asyncHandler(async (req, res, next) => {
   // Get details of platform and all its games (in parallel)
   const [platform, allGamesInPlatform] = await Promise.all([
     Platform.findById(req.params.id).exec(),
-    Game.find({ platform: req.params.id }, "title author")
-      .populate("author")
-      .exec(),
+    Game.find({ platform: req.params.id }, "title").exec(),
   ]);
 
   if (allGamesInPlatform.length > 0) {
@@ -122,16 +124,61 @@ exports.platform_delete_post = asyncHandler(async (req, res, next) => {
   } else {
     // Platform has no games. Delete object and redirect to the list of platforms.
     await Platform.findByIdAndRemove(req.body.platformid);
-    res.redirect("/catalog/platforms");
+    res.redirect("/inventory/platforms");
   }
 });
 
 // Display Platform update form on GET.
 exports.platform_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Platform update GET");
+  const platform = await Platform.findById(req.params.id).exec();
+
+  if (platform === null) {
+    // No results.
+    const err = new Error("Platform not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("platform_form", {
+    title: "Update Platform",
+    platform,
+  });
 });
 
 // Handle Platform update on POST.
-exports.platform_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Platform update POST");
-});
+exports.platform_update_post = [
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("company", "Company must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    const platform = new Platform({
+      name: req.body.name,
+      company: req.body.company,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("platform_form", {
+        title: "Update Platform",
+        platform,
+        errors: errors.array(),
+      });
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedPlatform = await Platform.findByIdAndUpdate(
+        req.params.id,
+        platform,
+        {}
+      );
+      // Redirect to platform detail page.
+      res.redirect(updatedPlatform.url);
+    }
+  }),
+];

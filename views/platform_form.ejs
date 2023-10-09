@@ -11,7 +11,7 @@
         placeholder="PlayStation 5, Xbox, etc."
         id="name"
         class="form-control"
-        value="<% locals.platform ? platform : '' %>"
+        value="<%= typeof platform === 'undefined' ? '' : platform.name %>"
         required="true"
       />
     </div>
@@ -19,11 +19,11 @@
       <label for="company">Company:</label>
       <input
         type="text"
-        name="name"
+        name="company"
         placeholder="Sony, Microsoft, etc."
-        id="name"
+        id="company"
         class="form-control"
-        value="<% locals.company ? company : '' %>"
+        value="<%= typeof platform === 'undefined' ? '' : platform.company %>"
         required="true"
       />
     </div>

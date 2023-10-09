@@ -6,7 +6,7 @@
     <% platform_list.forEach(platform => { %>
     <li>
       <a href="<%= platform.url %>"
-        ><% platform.company %> <%= platform.name %></a
+        ><%= platform.company %> <%= platform.name %></a
       >
     </li>
     <% }) %> <% if(!platform_list) {%>

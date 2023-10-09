@@ -5,8 +5,8 @@
   <ul>
     <% game_list.forEach(game => { %>
     <li>
-      <a href="<%= game.url %>"><strong><%= game.title %></strong></a
-      >-<em><%= game.description %></em>
+      <a href="<%= game.url %>"><strong><%= game.title %></strong></a>
+      <em><%= game.description %></em>
     </li>
     <% }); %> <% if(!game_list) {%>
     <li>There are no games.</li>

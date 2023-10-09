@@ -1,7 +1,7 @@
 <%- include('layout', {title:title}) %>
 
 <div class="content">
-  <h1>Platform: <%= platform.name %></h1>
+  <h1>Platform: <%= platform.company %> <%= platform.name %></h1>
   <div style="margin-left: 20px; margin-top: 20px">
     <h4>Games</h4>
     <dl>
@@ -20,5 +20,8 @@
 <div>
   <p>
     <a href="<%= platform.url %>/delete">Delete Platform</a>
+  </p>
+  <p>
+    <a href="<%= platform.url %>/update">Update Platform</a>
   </p>
 </div>

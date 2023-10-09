@@ -5,7 +5,9 @@
   <ul>
     <% genre_list.forEach(genre => { %>
     <li>
-      <a href="<%= genre.url %>"><%= genre.name %> (%= genre.description %>)</a>
+      <a href="<%= genre.url %>"><strong><%= genre.name %></strong></a> (<em
+        ><%= genre.description %></em
+      >)
     </li>
     <% }) %> <% if(!genre_list) {%>
     <li>There are no genres.</li>

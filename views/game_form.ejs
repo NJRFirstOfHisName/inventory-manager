@@ -33,6 +33,9 @@
       <label for="price">Sales price:</label>
       <input
         name="price"
+        type="number"
+        min="0"'
+        step=".01"
         id="price"
         class="form-control"
         placeholder="price"
@@ -45,6 +48,8 @@
       <label for="stock">Number of copies on hand (all platforms):</label>
       <input
         name="stock"
+        type="number"
+        min="0"
         id="stock"
         class="form-control"
         placeholder="stock"
@@ -93,8 +98,6 @@
         <% }) %>
       </div>
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
-  </form>
 
   <div class="form-group">
     <label>Platform(s):</label>

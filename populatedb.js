@@ -125,7 +125,7 @@ async function createGames() {
     gameCreate(
       0,
       "Call of Duty: Modern Warfare II",
-      "Good guys gripping guns gallantly and griping grossly greet grave generals as they gallivant globally.",
+      "Good guys gripping guns gallantly and griping grossly greet grave generals gallivanting globally.",
       "69.99",
       getStock(),
       "Infinity Ward",

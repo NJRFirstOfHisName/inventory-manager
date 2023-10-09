@@ -2,10 +2,10 @@
 
 <div class="content">
   <h1><%= title %>: <%= game.title %></h1>
-  <p><%= game.description %></p>
+  <p><%= game.stock %> copies on hand.</p>
 
   <% if(game.stock != 0){ %>
-  <p>Clear the game's stock before deleting the record.</p>
+  <p>Clear the game's current stock before deleting the record.</p>
   <% } else { %>
   <p>Do you really want to delete this game?</p>
   <form action="" method="POST">

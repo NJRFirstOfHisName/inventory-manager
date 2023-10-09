@@ -11,9 +11,23 @@
         placeholder="First-Person Shooter, Role Playing Game, etc."
         id="name"
         class="form-control"
-        value="<% locals.genre ? genre : '' %>"
+        value="<%= typeof genre === 'undefined' ? '' : genre.name %>"
         required="true"
       />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea
+        name="description"
+        id="description"
+        type="textarea"
+        class="form-control"
+        placeholder="Description"
+        required
+      >
+<%= typeof genre === 'undefined' ? '' : genre.description %></textarea
+      >
     </div>
     <button type="submit" class="btn-primary">Submit</button>
   </form>
